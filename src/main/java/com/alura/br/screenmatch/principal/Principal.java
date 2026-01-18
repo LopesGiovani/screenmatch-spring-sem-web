@@ -22,6 +22,7 @@ public class Principal {
     private ConsumoAPI consumo = new ConsumoAPI();
     private ConverteDados conversor = new ConverteDados();
     private Scanner leitura = new Scanner(System.in);
+    boolean debug = true;
 
     public void exibeMenu (){
         System.out.println("Digite o nome da série para busca: ");
@@ -61,8 +62,17 @@ public class Principal {
         System.out.println("Top 5 melhores episodios");
         dadosEpisodios.stream()
                 .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .peek(e -> {
+                    if (debug) System.out.println("Primeiro filtro(N/a), " + e);
+                })
                 .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .peek(e -> {
+                    if (debug) System.out.println("Ordenação , " + e);
+                })
                 .limit(5)
+                .peek(e -> {
+                    if (debug) System.out.println("Limite , " + e);
+                })
                 .forEach(System.out::println);
 
         List<Episodio> episodios = temporadas.stream()
